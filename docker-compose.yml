@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=questions
+      - MARIADB_DATABASE=questions
+      - MARIADB_PASSWORD=questions
+    ports:
+      - 26555:3306
+
+  questions:
+    tty: true
+    image: 'bitnami/laravel:5-master'
+    environment:
+      - DB_HOST=mariadb
+      - DB_USERNAME=questions
+      - DB_DATABASE=questions
+      - DB_PASSWORD=questions
+    depends_on:
+      - mariadb
+    ports:
+      - 26556:3000
+    volumes:
+      - ./:/app
